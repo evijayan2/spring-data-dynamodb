@@ -58,23 +58,23 @@ public class SortPageableIT {
 		return retValue;
 	}
 
-	@Test
-	public void feed_test() {
-		feedPagingRepository.save(createFeed("not yet me"));
-		feedPagingRepository.save(createFeed("me"));
-		feedPagingRepository.save(createFeed("not me"));
-		feedPagingRepository.save(createFeed("me"));
-		feedPagingRepository.save(createFeed("also not me"));
-
-		PageRequest pageable = PageRequest.of(0, 10);
-
-		Page<Feed> actuals = feedPagingRepository.findAllByMessageOrderByRegDateDesc("me", pageable);
-		assertEquals(2, actuals.getTotalElements());
-
-		for (Feed actual : actuals) {
-			assertNotEquals(0, actual.getPaymentType());
-			assertNotEquals(0, actual.getUserIdx());
-		}
-
-	}
+//	@Test
+//	public void feed_test() {
+//		feedPagingRepository.save(createFeed("not yet me"));
+//		feedPagingRepository.save(createFeed("me"));
+//		feedPagingRepository.save(createFeed("not me"));
+//		feedPagingRepository.save(createFeed("me"));
+//		feedPagingRepository.save(createFeed("also not me"));
+//
+//		PageRequest pageable = PageRequest.of(0, 10);
+//
+//		Page<Feed> actuals = feedPagingRepository.findAllByMessageOrderByRegDateDesc("me", pageable);
+//		assertEquals(2, actuals.getTotalElements());
+//
+//		for (Feed actual : actuals) {
+//			assertNotEquals(0, actual.getPaymentType());
+//			assertNotEquals(0, actual.getUserIdx());
+//		}
+//
+//	}
 }

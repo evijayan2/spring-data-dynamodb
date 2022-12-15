@@ -231,13 +231,13 @@ public class CRUDOperationsIT {
 			return u;
 		};
 
-		for (int i = 0; i < 22; i++) {
-			User u = userSupplier.get();
-			userPaginationRepository.save(u);
-		}
-		User u = userSupplier.get();
-		u.setName("not-test");
-		userPaginationRepository.save(u);
+//		for (int i = 0; i < 22; i++) {
+//			User u = userSupplier.get();
+//			userPaginationRepository.save(u);
+//		}
+//		User u = userSupplier.get();
+//		u.setName("not-test");
+//		userPaginationRepository.save(u);
 
 		List<User> allUsers = userPaginationRepository.findAll();
 		assertEquals(23, allUsers.size());

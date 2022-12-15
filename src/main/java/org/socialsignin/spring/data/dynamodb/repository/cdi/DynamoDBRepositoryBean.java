@@ -18,17 +18,16 @@ package org.socialsignin.spring.data.dynamodb.repository.cdi;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
+import jakarta.enterprise.context.spi.CreationalContext;
+import jakarta.enterprise.inject.spi.Bean;
+import jakarta.enterprise.inject.spi.BeanManager;
 import org.socialsignin.spring.data.dynamodb.core.DynamoDBOperations;
 import org.socialsignin.spring.data.dynamodb.core.DynamoDBTemplate;
 import org.socialsignin.spring.data.dynamodb.repository.support.DynamoDBRepositoryFactory;
 import org.springframework.data.repository.cdi.CdiRepositoryBean;
 import org.springframework.util.Assert;
 
-import javax.enterprise.context.spi.CreationalContext;
-import javax.enterprise.inject.spi.Bean;
-import javax.enterprise.inject.spi.BeanManager;
 import java.lang.annotation.Annotation;
-import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -63,7 +62,7 @@ class DynamoDBRepositoryBean<T> extends CdiRepositoryBean<T> {
 	 *            must not be {@literal null}.
 	 */
 	DynamoDBRepositoryBean(BeanManager beanManager, Bean<AmazonDynamoDB> amazonDynamoDBBean,
-			Bean<DynamoDBMapperConfig> dynamoDBMapperConfigBean, Bean<DynamoDBOperations> dynamoDBOperationsBean,
+						   Bean<DynamoDBMapperConfig> dynamoDBMapperConfigBean, Bean<DynamoDBOperations> dynamoDBOperationsBean,
 						   Bean<DynamoDBMapper> dynamoDBMapperBean, Set<Annotation> qualifiers, Class<T> repositoryType) {
 
 		super(qualifiers, repositoryType, beanManager);
@@ -89,8 +88,7 @@ class DynamoDBRepositoryBean<T> extends CdiRepositoryBean<T> {
 	 * .context.spi.CreationalContext, Class<T>, Optional<Object>)
 	 */
 	@Override
-	protected T create(CreationalContext<T> creationalContext, Class<T> repositoryType,
-			Optional<Object> customImplementation) {
+	protected T create(CreationalContext<T> creationalContext, Class<T> repositoryType) {
 
 		// Get an instance from the associated AmazonDynamoDB bean.
 		AmazonDynamoDB amazonDynamoDB = getDependencyInstance(amazonDynamoDBBean, AmazonDynamoDB.class);
@@ -122,4 +120,8 @@ class DynamoDBRepositoryBean<T> extends CdiRepositoryBean<T> {
 		return factory.getRepository(repositoryType);
 	}
 
+//	@Override
+//	protected T create(CreationalContext<T> creationalContext, Class<T> repositoryType) {
+//		return null;
+//	}
 }
