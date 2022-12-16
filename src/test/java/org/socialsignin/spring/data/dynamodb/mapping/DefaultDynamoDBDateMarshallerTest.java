@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright © 2018 spring-data-dynamodb (https://github.com/boostchicken/spring-data-dynamodb)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,57 +15,58 @@
  */
 package org.socialsignin.spring.data.dynamodb.mapping;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 @SuppressWarnings("deprecation")
 public class DefaultDynamoDBDateMarshallerTest {
 
-	@Rule
-	public ExpectedException expectedException = ExpectedException.none();
+//    @Rule
+//    public ExpectedException expectedException = ExpectedException.none();
 
-	private DefaultDynamoDBDateMarshaller underTest = new DefaultDynamoDBDateMarshaller();
+    private final DefaultDynamoDBDateMarshaller underTest = new DefaultDynamoDBDateMarshaller();
 
-	@Test
-	public void testMarshall() {
-		String actual = underTest.marshall(new Date(0));
+    @Test
+    public void testMarshall() {
+        String actual = underTest.marshall(new Date(0));
 
-		assertEquals("1970-01-01T00:00:00.000Z", actual);
-	}
+        assertEquals("1970-01-01T00:00:00.000Z", actual);
+    }
 
-	@Test
-	public void testMarshallNull() {
-		String actual = underTest.marshall(null);
+    @Test
+    public void testMarshallNull() {
+        String actual = underTest.marshall(null);
 
-		assertNull(actual);
-	}
+        assertNull(actual);
+    }
 
-	@Test
-	public void testUnmarshall() {
-		Date actual = underTest.unmarshall(Date.class, "1970-01-01T00:00:00.000Z");
+    @Test
+    public void testUnmarshall() {
+        Date actual = underTest.unmarshall(Date.class, "1970-01-01T00:00:00.000Z");
 
-		assertEquals(0L, actual.getTime());
-	}
+        assertEquals(0L, actual.getTime());
+    }
 
-	@Test
-	public void testUnmarshallNull() {
-		Date actual = underTest.unmarshall(Date.class, null);
+    @Test
+    public void testUnmarshallNull() {
+        Date actual = underTest.unmarshall(Date.class, null);
 
-		assertNull(actual);
-	}
+        assertNull(actual);
+    }
 
-	@Test
-	public void testUnmarshallGarbage() {
-		expectedException.expect(IllegalArgumentException.class);
-		expectedException.expectMessage("Could not unmarshall 'garbage' via yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+    @Test
+    public void testUnmarshallGarbage() {
+        Exception e = assertThrows(IllegalArgumentException.class, () -> {
+            underTest.unmarshall(Date.class, "garbage");
+        });
 
-		underTest.unmarshall(Date.class, "garbage");
-	}
+        assertTrue(e.getMessage().contains("Could not unmarshall 'garbage' via yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"));
+
+    }
 
 }

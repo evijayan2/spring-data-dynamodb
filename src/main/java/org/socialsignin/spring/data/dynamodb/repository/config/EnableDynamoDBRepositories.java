@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright © 2018 spring-data-dynamodb (https://github.com/boostchicken/spring-data-dynamodb)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -159,7 +159,7 @@ public @interface EnableDynamoDBRepositories {
 	String dynamoDBMapperRef() default "";
 
 	/**
-	 * Returns the {@link javax.validation.Validator } reference to be used for to
+	 * Returns the {@link jakarta.validation.Validator } reference to be used for to
 	 * validate DynamoDB entities
 	 *
 	 * @return The

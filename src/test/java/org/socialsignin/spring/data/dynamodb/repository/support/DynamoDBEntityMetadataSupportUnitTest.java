@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright © 2018 spring-data-dynamodb (https://github.com/boostchicken/spring-data-dynamodb)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,28 +16,29 @@
 package org.socialsignin.spring.data.dynamodb.repository.support;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMarshaller;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.socialsignin.spring.data.dynamodb.domain.sample.User;
 
-@RunWith(MockitoJUnitRunner.class)
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+@ExtendWith(MockitoExtension.class)
 public class DynamoDBEntityMetadataSupportUnitTest {
 
-	@Test
-	public void testGetMarshallerForProperty_WhenAnnotationIsOnField_AndReturnsDynamoDBMarshaller() {
-		DynamoDBEntityMetadataSupport<User, ?> support = new DynamoDBEntityMetadataSupport<>(User.class);
-		@SuppressWarnings("deprecation")
-		DynamoDBMarshaller<?> fieldAnnotation = support.getMarshallerForProperty("joinYear");
-		Assert.assertNotNull(fieldAnnotation);
-	}
+    @Test
+    public void testGetMarshallerForProperty_WhenAnnotationIsOnField_AndReturnsDynamoDBMarshaller() {
+        DynamoDBEntityMetadataSupport<User, ?> support = new DynamoDBEntityMetadataSupport<>(User.class);
+        @SuppressWarnings("deprecation")
+        DynamoDBMarshaller<?> fieldAnnotation = support.getMarshallerForProperty("joinYear");
+        assertNotNull(fieldAnnotation);
+    }
 
-	@Test
-	public void testGetMarshallerForProperty_WhenAnnotationIsOnMethod_AndReturnsDynamoDBMarshaller() {
-		DynamoDBEntityMetadataSupport<User, ?> support = new DynamoDBEntityMetadataSupport<>(User.class);
-		@SuppressWarnings("deprecation")
-		DynamoDBMarshaller<?> methodAnnotation = support.getMarshallerForProperty("leaveDate");
-		Assert.assertNotNull(methodAnnotation);
-	}
+    @Test
+    public void testGetMarshallerForProperty_WhenAnnotationIsOnMethod_AndReturnsDynamoDBMarshaller() {
+        DynamoDBEntityMetadataSupport<User, ?> support = new DynamoDBEntityMetadataSupport<>(User.class);
+        @SuppressWarnings("deprecation")
+        DynamoDBMarshaller<?> methodAnnotation = support.getMarshallerForProperty("leaveDate");
+        assertNotNull(methodAnnotation);
+    }
 }

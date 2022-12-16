@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright © 2018 spring-data-dynamodb (https://github.com/boostchicken/spring-data-dynamodb)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,73 +18,78 @@ package org.socialsignin.spring.data.dynamodb.mapping.event;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.socialsignin.spring.data.dynamodb.domain.sample.User;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.hamcrest.CoreMatchers.allOf;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.containsString;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ValidatingDynamoDBEventListenerTest {
-	@Rule
-	public ExpectedException expectedException = ExpectedException.none();
-	private final User sampleEntity = new User();
-	@Mock
-	private Validator validator;
-	private ValidatingDynamoDBEventListener underTest;
 
-	@Before
-	public void setUp() {
-		underTest = new ValidatingDynamoDBEventListener(validator);
-	}
+    private final User sampleEntity = new User();
+    @Mock
+    private Validator validator;
+    private ValidatingDynamoDBEventListener underTest;
 
-	@Test
-	public void testWrongConstructor() {
-		expectedException.expectMessage("validator must not be null!");
-		expectedException.expect(IllegalArgumentException.class);
+    @BeforeEach
+    public void setUp() {
+        underTest = new ValidatingDynamoDBEventListener(validator);
+    }
 
-		new ValidatingDynamoDBEventListener(null);
-	}
+    @Test
+    public void testWrongConstructor() {
+//		expectedException.expectMessage("validator must not be null!");
+//		expectedException.expect(IllegalArgumentException.class);
+        Exception e = assertThrows(IllegalArgumentException.class, () -> {
+            new ValidatingDynamoDBEventListener(null);
+        });
+        assertTrue(e.getMessage().contains("validator must not be null!"));
+    }
 
-	@Test
-	public void testEmptyResult() {
+    @Test
+    public void testEmptyResult() {
 
-		underTest.onBeforeSave(sampleEntity);
+        underTest.onBeforeSave(sampleEntity);
 
-		assertTrue(true);
-	}
+        assertTrue(true);
+    }
 
-	@Test
-	public void testValidationException() {
-		expectedException.expect(ConstraintViolationException.class);
-		expectedException.expectMessage(
-				allOf(containsString("Test Validation Exception 1"), containsString("Test Validation Exception 2")));
+    @Test
+    public void testValidationException() {
+//		expectedException.expect(ConstraintViolationException.class);
+//		expectedException.expectMessage(
+//				allOf(containsString("Test Validation Exception 1"), containsString("Test Validation Exception 2")));
 
-		Set<ConstraintViolation<User>> validationResult = new HashSet<>();
+        Set<ConstraintViolation<User>> validationResult = new HashSet<>();
 
-		@SuppressWarnings("unchecked")
-		ConstraintViolation<User> vc1 = mock(ConstraintViolation.class);
-		when(vc1.toString()).thenReturn("Test Validation Exception 1");
-		validationResult.add(vc1);
+        @SuppressWarnings("unchecked")
+        ConstraintViolation<User> vc1 = mock(ConstraintViolation.class);
+        when(vc1.toString()).thenReturn("Test Validation Exception 1");
+        validationResult.add(vc1);
 
-		@SuppressWarnings("unchecked")
-		ConstraintViolation<User> vc2 = mock(ConstraintViolation.class);
-		when(vc2.toString()).thenReturn("Test Validation Exception 2");
-		validationResult.add(vc2);
-		when(validator.validate(sampleEntity)).thenReturn(validationResult);
+        @SuppressWarnings("unchecked")
+        ConstraintViolation<User> vc2 = mock(ConstraintViolation.class);
+        when(vc2.toString()).thenReturn("Test Validation Exception 2");
+        validationResult.add(vc2);
+        when(validator.validate(sampleEntity)).thenReturn(validationResult);
+        Exception e = assertThrows(ConstraintViolationException.class, () -> {
+            underTest.onBeforeSave(sampleEntity);
+        });
+        assertTrue(allOf(containsString("Test Validation Exception 1"),
+                containsString("Test Validation Exception 2")).matches(e.getMessage())
+        );
 
-		underTest.onBeforeSave(sampleEntity);
-	}
+    }
 }

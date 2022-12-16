@@ -16,7 +16,8 @@
     limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.boostchicken</groupId>
     <artifactId>spring-data-dynamodb</artifactId>
@@ -26,7 +27,8 @@
 
     <description>The primary goal of the Spring® Data project is to make it easier to build Spring-powered applications
         that use data access technologies.
-        This module deals with enhanced support for a data access layer built on AWS DynamoDB.</description>
+        This module deals with enhanced support for a data access layer built on AWS DynamoDB.
+    </description>
     <url>https://github.com/boostchicken/spring-data-dynamodb</url>
 
     <licenses>
@@ -39,16 +41,17 @@
     <properties>
         <spring.version>6.0.2</spring.version>
         <spring-data.version>3.0.0</spring-data.version>
+        <spring-boot.version>3.0.0</spring-boot.version>
 
-        <hibernate-validator.version>7.0.1.Final</hibernate-validator.version>
-        <aws-java-sdk.version>1.11.838</aws-java-sdk.version>
-        <junit.version>4.13.2</junit.version>
-        <mockito.version>4.9.0</mockito.version>
-<!--        <cdi.version>2.0</cdi.version>-->
+        <aws-java-sdk.version>1.12.364</aws-java-sdk.version>
+        <aws-java-sdk2.version>2.18.38</aws-java-sdk2.version>
+
+        <mockito.version>4.10.0</mockito.version>
+        <junit.version>5.9.1</junit.version>
         <slf4j-test.version>1.2.0</slf4j-test.version>
         <sqlite4java.version>1.0.392</sqlite4java.version>
-
         <findbugs.version>3.0.5</findbugs.version>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -64,30 +67,34 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+            </dependency>
+
             <dependency>
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-commons</artifactId>
+                <type>pom</type>
                 <version>${spring-data.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>org.hibernate.validator</groupId>
-                <artifactId>hibernate-validator</artifactId>
-                <version>${hibernate-validator.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <type>pom</type>
                 <version>${junit.version}</version>
             </dependency>
-
 
             <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-core</artifactId>
                 <version>${mockito.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>com.amazonaws</groupId>
                 <artifactId>aws-java-sdk-bom</artifactId>
@@ -97,15 +104,23 @@
             </dependency>
 
             <dependency>
+                <groupId>software.amazon.awssdk</groupId>
+                <artifactId>bom</artifactId>
+                <type>pom</type>
+                <version>${aws-java-sdk2.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>com.amazonaws</groupId>
                 <artifactId>DynamoDBLocal</artifactId>
                 <version>[1.11,2.0)</version>
             </dependency>
-			<dependency>
-				<groupId>org.apache.logging.log4j</groupId>
-				<artifactId>log4j-to-slf4j</artifactId>
-				<version>2.17.1</version>
-			</dependency>
+
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-to-slf4j</artifactId>
+                <version>2.19.0</version>
+            </dependency>
 
             <dependency>
                 <groupId>uk.org.lidalia</groupId>
@@ -129,19 +144,8 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>1.7.30</version>
+                <version>2.0.6</version>
             </dependency>
-            <dependency>
-                <groupId>software.amazon.awssdk</groupId>
-                <artifactId>bom</artifactId>
-                <version>2.18.38</version>
-            </dependency> 
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter</artifactId>
-                <version>3.0.0</version>
-                <type>pom</type>
-            </dependency>  
         </dependencies>
     </dependencyManagement>
 
@@ -155,21 +159,16 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
         </dependency>
-	    <dependency>
-		  <groupId>org.springframework.boot</groupId>
-		  <artifactId>spring-boot-starter-validation</artifactId>
-          <version>3.0.0</version>
-	    </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+            <version>${spring-boot.version}</version>
+        </dependency>
         <!-- SPRING DATA -->
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-commons</artifactId>
-            <version>3.0.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hibernate.validator</groupId>
-            <artifactId>hibernate-validator</artifactId>
+            <version>${spring-data.version}</version>
         </dependency>
 
         <!-- DynamoDB -->
@@ -179,12 +178,6 @@
         </dependency>
 
         <!-- CDI -->
-        <!-- <dependency>
-            <groupId>javax.enterprise</groupId>
-            <artifactId>cdi-api</artifactId>
-            <version>${cdi.version}</version>
-            <scope>compile</scope>
-        </dependency> -->
         <dependency>
             <groupId>jakarta.enterprise</groupId>
             <artifactId>jakarta.enterprise.cdi-api</artifactId>
@@ -198,7 +191,6 @@
             <version>3.0.2</version>
         </dependency>
 
-
         <!-- TEST -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -209,17 +201,34 @@
             <groupId>com.amazonaws</groupId>
             <artifactId>DynamoDBLocal</artifactId>
             <scope>test</scope>
-       </dependency>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-to-slf4j</artifactId>
-			<scope>test</scope>
-		</dependency>
+        </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-to-slf4j</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.hamcrest/hamcrest -->
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest</artifactId>
+            <version>2.2</version>
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
@@ -233,12 +242,18 @@
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>dynamodb</artifactId>
-            <version>2.18.38</version>
+            <version>${aws-java-sdk2.version}</version>
         </dependency>
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>dynamodb-enhanced</artifactId>
-            <version>2.18.38</version>
+            <version>${aws-java-sdk2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -248,7 +263,7 @@
                 <plugin>
                     <groupId>net.revelc.code.formatter</groupId>
                     <artifactId>formatter-maven-plugin</artifactId>
-                    <version>2.17.0</version>
+                    <version>2.21.0</version>
                     <configuration>
                         <lineEnding>LF</lineEnding>
                     </configuration>
@@ -274,7 +289,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-checkstyle-plugin</artifactId>
-                    <version>3.1.2</version>
+                    <version>3.2.0</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-failsafe-plugin</artifactId>
@@ -322,7 +337,7 @@
             <plugin>
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>
-                <version>3.0</version>
+                <version>4.1</version>
                 <configuration>
                     <header>com/mycila/maven/plugin/license/templates/APACHE-2.txt</header>
                     <properties>
@@ -381,30 +396,30 @@
                     </execution>
                     <execution>
                         <id>default-check</id>
-                            <phase>test</phase>
-                            <goals>
-                                <goal>check</goal>
-                            </goals>
-                            <configuration>
-                                <rules>
-                                    <rule>
-                                        <element>BUNDLE</element>
-                                        <limits>
-                                            <limit>
-                                                <counter>BRANCH</counter>
-                                                <value>COVEREDRATIO</value>
-                                                <minimum>0.47</minimum>
-                                            </limit>
-                                            <limit>
-                                                <counter>LINE</counter>
-                                                <value>COVEREDRATIO</value>
-                                                <minimum>0.55</minimum>
-                                            </limit>
-                                        </limits>
-                                    </rule>
-                                </rules>
-                            </configuration>
-                        </execution>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <rule>
+                                    <element>BUNDLE</element>
+                                    <limits>
+                                        <limit>
+                                            <counter>BRANCH</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>0.47</minimum>
+                                        </limit>
+                                        <limit>
+                                            <counter>LINE</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>0.55</minimum>
+                                        </limit>
+                                    </limits>
+                                </rule>
+                            </rules>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -425,26 +440,26 @@
                     <configLocation>src/checkstyle.xml</configLocation>
                 </configuration>
             </plugin>
-			<plugin>
-				<groupId>com.github.spotbugs</groupId>
-				<artifactId>spotbugs-maven-plugin</artifactId>
-				<version>4.0.4</version>
-				<configuration>
-					<effort>Max</effort>
-					<!-- Reports all bugs (other values are medium and max) -->
-					<threshold>Max</threshold>
-					<!-- Produces XML report <xmlOutput>true</xmlOutput> -->
-					<excludeFilterFile>src/spotbugs-exclude.xml</excludeFilterFile>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>verify</phase>
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+            <!--            <plugin>-->
+            <!--                <groupId>com.github.spotbugs</groupId>-->
+            <!--                <artifactId>spotbugs-maven-plugin</artifactId>-->
+            <!--                <version>4.7.3.0</version>-->
+            <!--                <configuration>-->
+            <!--                    <effort>Max</effort>-->
+            <!--                    &lt;!&ndash; Reports all bugs (other values are medium and max) &ndash;&gt;-->
+            <!--                    <threshold>Max</threshold>-->
+            <!--                    &lt;!&ndash; Produces XML report <xmlOutput>true</xmlOutput> &ndash;&gt;-->
+            <!--                    <excludeFilterFile>src/spotbugs-exclude.xml</excludeFilterFile>-->
+            <!--                </configuration>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <phase>verify</phase>-->
+            <!--                        <goals>-->
+            <!--                            <goal>check</goal>-->
+            <!--                        </goals>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
@@ -531,9 +546,17 @@
         <connection>scm:git:ssh://github.com/boostchicken/spring-data-dynamodb.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/boostchicken/spring-data-dynamodb.git</developerConnection>
         <tag>HEAD</tag>
-  </scm>
+    </scm>
 
     <repositories>
+        <repository>
+            <id>maven-central</id>
+            <url>https://repo.maven.apache.org/maven2</url>
+        </repository>
+        <repository>
+            <id>sonatype</id>
+            <url>https://repository.sonatype.org/content/groups/public/</url>
+        </repository>
         <repository>
             <id>spring-libs-snapshot</id>
             <url>https://repo.springsource.org/libs-snapshot</url>
@@ -621,6 +644,15 @@
             </properties>
         </profile>
         <profile>
+            <id>java8-doclint-disabled</id>
+            <activation>
+                <jdk>[1.8,)</jdk>
+            </activation>
+            <properties>
+                <javadoc.opts>-Xdoclint:none</javadoc.opts>
+            </properties>
+        </profile>
+        <profile>
             <id>release</id>
             <properties>
                 <sqlite4java.artifactId>sqlite4java-win32-x64</sqlite4java.artifactId>
@@ -651,57 +683,60 @@
                                 <goals>
                                     <goal>jar</goal>
                                 </goals>
+                                <configuration>
+                                    <additionalparam>${javadoc.opts}</additionalparam>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>3.0.1</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
+                    <!--                    <plugin>-->
+                    <!--                        <groupId>org.apache.maven.plugins</groupId>-->
+                    <!--                        <artifactId>maven-gpg-plugin</artifactId>-->
+                    <!--                        <version>3.0.1</version>-->
+                    <!--                        <executions>-->
+                    <!--                            <execution>-->
+                    <!--                                <id>sign-artifacts</id>-->
+                    <!--                                <phase>verify</phase>-->
+                    <!--                                <goals>-->
+                    <!--                                    <goal>sign</goal>-->
+                    <!--                                </goals>-->
+                    <!--                            </execution>-->
+                    <!--                        </executions>-->
+                    <!--                    </plugin>-->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-site-plugin</artifactId>
                         <version>3.7</version>
                         <configuration>
-                        <!-- Deactivate as Github plugin controls the upload -->
+                            <!-- Deactivate as Github plugin controls the upload -->
                             <skipDeploy>true</skipDeploy>
                         </configuration>
                     </plugin>
-					<plugin>
-					    <!-- Deploy the web site -->
-					    <groupId>com.github.github</groupId>
-					    <artifactId>site-maven-plugin</artifactId>
-					    <version>0.12</version>
-					    <executions>
-					        <execution>
-					            <goals>
-					                <goal>site</goal>
-					            </goals>
-					            <!-- select the Maven phase in which the plugin will be executed -->
-					            <phase>site-deploy</phase>
-					            <configuration>
-					                <!-- Plugin configuration ges here -->
-					                <server>github</server>
-					                <!-- The commit message -->
-					                <message>Building site</message>
-					                <!-- The location where the site is uploaded -->
-					                <path>${site.path}</path>
-					                <!-- Use merge or override the content -->
-					                <merge>true</merge>
-					            </configuration>
-					        </execution>
-					    </executions>
-					</plugin>
+                    <plugin>
+                        <!-- Deploy the web site -->
+                        <groupId>com.github.github</groupId>
+                        <artifactId>site-maven-plugin</artifactId>
+                        <version>0.12</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>site</goal>
+                                </goals>
+                                <!-- select the Maven phase in which the plugin will be executed -->
+                                <phase>site-deploy</phase>
+                                <configuration>
+                                    <!-- Plugin configuration ges here -->
+                                    <server>github</server>
+                                    <!-- The commit message -->
+                                    <message>Building site</message>
+                                    <!-- The location where the site is uploaded -->
+                                    <path>${site.path}</path>
+                                    <!-- Use merge or override the content -->
+                                    <merge>true</merge>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
                 </plugins>
             </build>
         </profile>
@@ -721,7 +756,7 @@
             <timezone>0</timezone>
         </developer>
         <developer>
-        	<id>derjust</id>
+            <id>derjust</id>
             <name>Sebastian J</name>
             <email>zeeman@zeeman.de</email>
             <timezone>America/New_York</timezone>
@@ -768,7 +803,7 @@
             <name>Rene Enriquez</name>
             <url>enriquezrene</url>
         </contributor>
-		<contributor>
+        <contributor>
             <name>Ryon Day</name>
             <url>https://github.com/ryonday</url>
         </contributor>
@@ -792,8 +827,8 @@
     </distributionManagement>
 
     <issueManagement>
-    	<system>GitHub</system>
-    	<url>https://github.com/boostchicken/spring-data-dynamodb/issues</url>
+        <system>GitHub</system>
+        <url>https://github.com/boostchicken/spring-data-dynamodb/issues</url>
     </issueManagement>
 
     <ciManagement>
@@ -841,16 +876,16 @@
                     <configLocation>src/checkstyle.xml</configLocation>
                 </configuration>
             </plugin>
-<!--            <plugin>-->
-<!--                <groupId>org.codehaus.mojo</groupId>-->
-<!--                <artifactId>findbugs-maven-plugin</artifactId>-->
-<!--                <version>${findbugs.version}</version>-->
-<!--                <configuration>-->
-<!--                    <effort>Max</effort>-->
-<!--                    &lt;!&ndash; Reports all bugs (other values are medium and max) &ndash;&gt;-->
-<!--                    <threshold>Low</threshold>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
+            <!--            <plugin>-->
+            <!--                <groupId>org.codehaus.mojo</groupId>-->
+            <!--                <artifactId>findbugs-maven-plugin</artifactId>-->
+            <!--                <version>${findbugs.version}</version>-->
+            <!--                <configuration>-->
+            <!--                    <effort>Max</effort>-->
+            <!--                    &lt;!&ndash; Reports all bugs (other values are medium and max) &ndash;&gt;-->
+            <!--                    <threshold>Low</threshold>-->
+            <!--                </configuration>-->
+            <!--            </plugin>-->
 
 
             <plugin>

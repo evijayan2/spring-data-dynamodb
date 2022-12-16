@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright © 2018 spring-data-dynamodb (https://github.com/boostchicken/spring-data-dynamodb)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,46 +15,46 @@
  */
 package org.socialsignin.spring.data.dynamodb.repository;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class DynamoDBHashAndRangeKeyTest {
 
-	@Mock
-	private Object hash;
-	@Mock
-	private Object range;
+    @Mock
+    private Object hash;
+    @Mock
+    private Object range;
 
-	@Test
-	public void testConstructor() {
-		DynamoDBHashAndRangeKey underTest = new DynamoDBHashAndRangeKey(hash, range);
+    @Test
+    public void testConstructor() {
+        DynamoDBHashAndRangeKey underTest = new DynamoDBHashAndRangeKey(hash, range);
 
-		assertEquals(hash, underTest.getHashKey());
-		assertEquals(range, underTest.getRangeKey());
-	}
+        assertEquals(hash, underTest.getHashKey());
+        assertEquals(range, underTest.getRangeKey());
+    }
 
-	@Test
-	public void testDefaultConstructor() {
-		DynamoDBHashAndRangeKey underTest = new DynamoDBHashAndRangeKey();
+    @Test
+    public void testDefaultConstructor() {
+        DynamoDBHashAndRangeKey underTest = new DynamoDBHashAndRangeKey();
 
-		assertNull(underTest.getHashKey());
-		assertNull(underTest.getRangeKey());
-	}
+        assertNull(underTest.getHashKey());
+        assertNull(underTest.getRangeKey());
+    }
 
-	@Test
-	public void testGetterSetter() {
-		DynamoDBHashAndRangeKey underTest = new DynamoDBHashAndRangeKey();
+    @Test
+    public void testGetterSetter() {
+        DynamoDBHashAndRangeKey underTest = new DynamoDBHashAndRangeKey();
 
-		underTest.setHashKey(hash);
-		underTest.setRangeKey(range);
+        underTest.setHashKey(hash);
+        underTest.setRangeKey(range);
 
-		assertEquals(hash, underTest.getHashKey());
-		assertEquals(range, underTest.getRangeKey());
-	}
+        assertEquals(hash, underTest.getHashKey());
+        assertEquals(range, underTest.getRangeKey());
+    }
 }

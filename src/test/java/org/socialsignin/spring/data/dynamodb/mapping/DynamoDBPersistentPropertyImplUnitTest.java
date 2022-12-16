@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright © 2018 spring-data-dynamodb (https://github.com/boostchicken/spring-data-dynamodb)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,75 +17,73 @@ package org.socialsignin.spring.data.dynamodb.mapping;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIgnore;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * Unit tests for {@link DynamoDBPersistentPropertyImpl}.
- * 
+ *
  * @author Michael Lavelle
  * @author Sebastian Just
  */
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class DynamoDBPersistentPropertyImplUnitTest {
 
-	DynamoDBMappingContext context;
-	DynamoDBPersistentEntity<?> entity;
+    DynamoDBMappingContext context;
+    DynamoDBPersistentEntity<?> entity;
 
-	@Before
-	public void setUp() {
+    @BeforeEach
+    public void setUp() {
 
-		context = new DynamoDBMappingContext();
-		entity = context.getPersistentEntity(Sample.class);
-	}
+        context = new DynamoDBMappingContext();
+        entity = context.getPersistentEntity(Sample.class);
+    }
 
-	/**
-	 * @see DATAJPA-284
-	 */
-	@Test
-	public void considersOtherPropertiesAsNotTransient() {
+    /**
+     * @see DATAJPA-284
+     */
+    @Test
+    public void considersOtherPropertiesAsNotTransient() {
 
-		DynamoDBPersistentProperty property = entity.getPersistentProperty("otherProp");
-		assertThat(property, is(notNullValue()));
-	}
+        DynamoDBPersistentProperty property = entity.getPersistentProperty("otherProp");
+        assertThat(property, is(notNullValue()));
+    }
 
-	/**
-	 * @see DATAJPA-376
-	 */
-	@Test
-	public void considersDynamoDBIgnoredPropertiesAsTransient() {
-		assertThat(entity.getPersistentProperty("ignoredProp"), is(nullValue()));
-	}
+    /**
+     * @see DATAJPA-376
+     */
+    @Test
+    public void considersDynamoDBIgnoredPropertiesAsTransient() {
+        assertThat(entity.getPersistentProperty("ignoredProp"), is(nullValue()));
+    }
 
-	@DynamoDBTable(tableName = "sample")
-	static class Sample {
+    @DynamoDBTable(tableName = "sample")
+    static class Sample {
 
-		private String ignoredProp = "ignored";
-		private String otherProp = "other";
+        private String ignoredProp = "ignored";
+        private String otherProp = "other";
 
-		public String getOtherProp() {
-			return otherProp;
-		}
+        public String getOtherProp() {
+            return otherProp;
+        }
 
-		public void setOtherProp(String otherProp) {
-			this.otherProp = otherProp;
-		}
+        public void setOtherProp(String otherProp) {
+            this.otherProp = otherProp;
+        }
 
-		@DynamoDBIgnore
-		public String getIgnoredProp() {
-			return ignoredProp;
-		}
+        @DynamoDBIgnore
+        public String getIgnoredProp() {
+            return ignoredProp;
+        }
 
-		public void setIgnoredProp(String ignoredProp) {
-			this.ignoredProp = ignoredProp;
-		}
-	}
+        public void setIgnoredProp(String ignoredProp) {
+            this.ignoredProp = ignoredProp;
+        }
+    }
 
 }

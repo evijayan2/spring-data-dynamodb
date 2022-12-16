@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright © 2018 spring-data-dynamodb (https://github.com/boostchicken/spring-data-dynamodb)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,12 +15,12 @@
  */
 package org.socialsignin.spring.data.dynamodb.repository.support;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.socialsignin.spring.data.dynamodb.core.DynamoDBOperations;
 import org.socialsignin.spring.data.dynamodb.domain.sample.Playlist;
 import org.socialsignin.spring.data.dynamodb.domain.sample.PlaylistId;
@@ -29,101 +29,103 @@ import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for {@link DynamoDBSimpleIdRepository}.
- * 
+ *
  * @author Michael Lavelle
  * @author Sebastian Just
  */
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class SimpleDynamoDBPagingAndSortingRepositoryUnitTest {
 
-	SimpleDynamoDBPagingAndSortingRepository<User, Long> repoForEntityWithOnlyHashKey;
+    SimpleDynamoDBPagingAndSortingRepository<User, Long> repoForEntityWithOnlyHashKey;
 
-	SimpleDynamoDBPagingAndSortingRepository<Playlist, PlaylistId> repoForEntityWithHashAndRangeKey;
+    SimpleDynamoDBPagingAndSortingRepository<Playlist, PlaylistId> repoForEntityWithHashAndRangeKey;
 
-	@Mock
-	DynamoDBOperations dynamoDBOperations;
+    @Mock
+    DynamoDBOperations dynamoDBOperations;
 
-	private User testUser;
+    private User testUser;
 
-	private Playlist testPlaylist;
+    private Playlist testPlaylist;
 
-	private PlaylistId testPlaylistId;
+    private PlaylistId testPlaylistId;
 
-	@Mock
-	EnableScanPermissions mockEnableScanPermissions;
+    @Mock
+    EnableScanPermissions mockEnableScanPermissions;
 
-	@Mock
-	DynamoDBEntityInformation<User, Long> entityWithOnlyHashKeyInformation;
+    @Mock
+    DynamoDBEntityInformation<User, Long> entityWithOnlyHashKeyInformation;
 
-	@Mock
-	DynamoDBEntityInformation<Playlist, PlaylistId> entityWithHashAndRangeKeyInformation;
+    @Mock
+    DynamoDBEntityInformation<Playlist, PlaylistId> entityWithHashAndRangeKeyInformation;
 
-	@Before
-	public void setUp() {
+    @BeforeEach
+    public void setUp() {
 
-		testUser = new User();
+        testUser = new User();
 
-		testPlaylistId = new PlaylistId();
-		testPlaylistId.setUserName("michael");
-		testPlaylistId.setPlaylistName("playlist1");
+        testPlaylistId = new PlaylistId();
+        testPlaylistId.setUserName("michael");
+        testPlaylistId.setPlaylistName("playlist1");
 
-		testPlaylist = new Playlist(testPlaylistId);
+        testPlaylist = new Playlist(testPlaylistId);
 
-		when(entityWithOnlyHashKeyInformation.getJavaType()).thenReturn(User.class);
-		when(entityWithOnlyHashKeyInformation.getHashKey(1l)).thenReturn(1l);
+        Mockito.lenient().when(entityWithOnlyHashKeyInformation.getJavaType()).thenReturn(User.class);
+        Mockito.lenient().when(entityWithOnlyHashKeyInformation.getHashKey(1L)).thenReturn(1L);
 
-		when(entityWithHashAndRangeKeyInformation.getJavaType()).thenReturn(Playlist.class);
-		when(entityWithHashAndRangeKeyInformation.getHashKey(testPlaylistId)).thenReturn("michael");
-		when(entityWithHashAndRangeKeyInformation.getRangeKey(testPlaylistId)).thenReturn("playlist1");
-		when(entityWithHashAndRangeKeyInformation.isRangeKeyAware()).thenReturn(true);
+        Mockito.lenient().when(entityWithHashAndRangeKeyInformation.getJavaType()).thenReturn(Playlist.class);
+        Mockito.lenient().when(entityWithHashAndRangeKeyInformation.getHashKey(testPlaylistId)).thenReturn("michael");
+        Mockito.lenient().when(entityWithHashAndRangeKeyInformation.getRangeKey(testPlaylistId)).thenReturn("playlist1");
+        Mockito.lenient().when(entityWithHashAndRangeKeyInformation.isRangeKeyAware()).thenReturn(true);
 
-		repoForEntityWithOnlyHashKey = new SimpleDynamoDBPagingAndSortingRepository<>(entityWithOnlyHashKeyInformation,
-				dynamoDBOperations, mockEnableScanPermissions);
-		repoForEntityWithHashAndRangeKey = new SimpleDynamoDBPagingAndSortingRepository<>(
-				entityWithHashAndRangeKeyInformation, dynamoDBOperations, mockEnableScanPermissions);
+        repoForEntityWithOnlyHashKey = new SimpleDynamoDBPagingAndSortingRepository<>(entityWithOnlyHashKeyInformation,
+                dynamoDBOperations, mockEnableScanPermissions);
+        repoForEntityWithHashAndRangeKey = new SimpleDynamoDBPagingAndSortingRepository<>(
+                entityWithHashAndRangeKeyInformation, dynamoDBOperations, mockEnableScanPermissions);
 
-		when(dynamoDBOperations.load(User.class, 1l)).thenReturn(testUser);
-		when(dynamoDBOperations.load(Playlist.class, "michael", "playlist1")).thenReturn(testPlaylist);
+        Mockito.lenient().when(dynamoDBOperations.load(User.class, 1L)).thenReturn(testUser);
+        Mockito.lenient().when(dynamoDBOperations.load(Playlist.class, "michael", "playlist1")).thenReturn(testPlaylist);
 
-	}
+    }
 
-	/**
-	 * @see DATAJPA-177
-	 */
-	@Test(expected = EmptyResultDataAccessException.class)
-	public void throwsExceptionIfEntityWithOnlyHashKeyToDeleteDoesNotExist() {
+    /**
+     * @see DATAJPA-177
+     */
+    @Test //(expected = .class)
+    public void throwsExceptionIfEntityWithOnlyHashKeyToDeleteDoesNotExist() {
+        assertThrows(EmptyResultDataAccessException.class, () -> {
+            repoForEntityWithOnlyHashKey.deleteById(4711L);
+        });
+    }
 
-		repoForEntityWithOnlyHashKey.deleteById(4711L);
-	}
+    @Test
+    public void findOneEntityWithOnlyHashKey() {
+        Optional<User> user = repoForEntityWithOnlyHashKey.findById(1L);
+        Mockito.verify(dynamoDBOperations).load(User.class, 1L);
+        assertEquals(testUser, user.get());
+    }
 
-	@Test
-	public void findOneEntityWithOnlyHashKey() {
-		Optional<User> user = repoForEntityWithOnlyHashKey.findById(1l);
-		Mockito.verify(dynamoDBOperations).load(User.class, 1l);
-		assertEquals(testUser, user.get());
-	}
+    @Test
+    public void findOneEntityWithHashAndRangeKey() {
+        Optional<Playlist> playlist = repoForEntityWithHashAndRangeKey.findById(testPlaylistId);
+        assertEquals(testPlaylist, playlist.get());
+    }
 
-	@Test
-	public void findOneEntityWithHashAndRangeKey() {
-		Optional<Playlist> playlist = repoForEntityWithHashAndRangeKey.findById(testPlaylistId);
-		assertEquals(testPlaylist, playlist.get());
-	}
+    /**
+     * @see DATAJPA-177
+     */
+    @Test //(expected = EmptyResultDataAccessException.class)
+    public void throwsExceptionIfEntityWithHashAndRangeKeyToDeleteDoesNotExist() {
+        assertThrows(EmptyResultDataAccessException.class, () -> {
+            PlaylistId playlistId = new PlaylistId();
+            playlistId.setUserName("someUser");
+            playlistId.setPlaylistName("somePlaylistName");
 
-	/**
-	 * @see DATAJPA-177
-	 */
-	@Test(expected = EmptyResultDataAccessException.class)
-	public void throwsExceptionIfEntityWithHashAndRangeKeyToDeleteDoesNotExist() {
-
-		PlaylistId playlistId = new PlaylistId();
-		playlistId.setUserName("someUser");
-		playlistId.setPlaylistName("somePlaylistName");
-
-		repoForEntityWithHashAndRangeKey.deleteById(playlistId);
-	}
+            repoForEntityWithHashAndRangeKey.deleteById(playlistId);
+        });
+    }
 }

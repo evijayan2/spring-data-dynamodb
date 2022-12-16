@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright © 2018 spring-data-dynamodb (https://github.com/boostchicken/spring-data-dynamodb)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,52 +15,54 @@
  */
 package org.socialsignin.spring.data.dynamodb.marshaller;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class Date2EpocheDynamoDBMarshallerTest {
 
-	private Date2EpocheDynamoDBMarshaller underTest;
+    private Date2EpocheDynamoDBMarshaller underTest;
 
-	@Before
-	public void setUp() {
-		underTest = new Date2EpocheDynamoDBMarshaller();
-	}
+    @BeforeEach
+    public void setUp() {
+        underTest = new Date2EpocheDynamoDBMarshaller();
+    }
 
-	@Test
-	public void testNullMarshall() {
-		String actual = underTest.marshall(null);
+    @Test
+    public void testNullMarshall() {
+        String actual = underTest.marshall(null);
 
-		assertNull(actual);
-	}
+        assertNull(actual);
+    }
 
-	@Test
-	public void testMarshall() {
-		assertEquals("0", underTest.marshall(new Date(0)));
-		assertEquals("0", underTest.convert(new Date(0)));
-	}
+    @Test
+    public void testMarshall() {
+        assertEquals("0", underTest.marshall(new Date(0)));
+        assertEquals("0", underTest.convert(new Date(0)));
+    }
 
-	@Test
-	public void testUnmarshallNull() {
-		Date actual = underTest.unmarshall(Date.class, null);
+    @Test
+    public void testUnmarshallNull() {
+        Date actual = underTest.unmarshall(Date.class, null);
 
-		assertNull(actual);
-	}
+        assertNull(actual);
+    }
 
-	@Test
-	public void testUnmarshall() {
-		assertEquals(new Date(0), underTest.unmarshall(Date.class, "0"));
-		assertEquals(new Date(0), underTest.unconvert("0"));;
+    @Test
+    public void testUnmarshall() {
+        assertEquals(new Date(0), underTest.unmarshall(Date.class, "0"));
+        assertEquals(new Date(0), underTest.unconvert("0"));
 
-	}
+    }
 
-	@Test(expected = NumberFormatException.class)
-	public void testUnmarshallGarbage() {
-		underTest.unmarshall(Date.class, "something");
-	}
+    @Test //(expected = NumberFormatException.class)
+    public void testUnmarshallGarbage() {
+        assertThrows(NumberFormatException.class, () ->
+        {
+            underTest.unmarshall(Date.class, "something");
+        });
+    }
 }

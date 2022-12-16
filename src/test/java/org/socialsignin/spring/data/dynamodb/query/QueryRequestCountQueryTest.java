@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright © 2018 spring-data-dynamodb (https://github.com/boostchicken/spring-data-dynamodb)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,39 +16,39 @@
 package org.socialsignin.spring.data.dynamodb.query;
 
 import com.amazonaws.services.dynamodbv2.model.QueryRequest;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.socialsignin.spring.data.dynamodb.core.DynamoDBOperations;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class QueryRequestCountQueryTest {
-	@Mock
-	private DynamoDBOperations dynamoDBOperations;
-	@Mock
-	private QueryRequest queryRequest;
+    @Mock
+    private DynamoDBOperations dynamoDBOperations;
+    @Mock
+    private QueryRequest queryRequest;
 
-	private QueryRequestCountQuery underTest;
+    private QueryRequestCountQuery underTest;
 
-	@Before
-	public void setUp() {
-		underTest = new QueryRequestCountQuery(dynamoDBOperations, queryRequest);
-	}
+    @BeforeEach
+    public void setUp() {
+        underTest = new QueryRequestCountQuery(dynamoDBOperations, queryRequest);
+    }
 
-	@Test
-	public void testGetSingleResult() {
-		int expected = ThreadLocalRandom.current().nextInt();
-		when(dynamoDBOperations.count(Long.class, queryRequest)).thenReturn(expected);
+    @Test
+    public void testGetSingleResult() {
+        int expected = ThreadLocalRandom.current().nextInt();
+        when(dynamoDBOperations.count(Long.class, queryRequest)).thenReturn(expected);
 
-		Long actual = underTest.getSingleResult();
+        Long actual = underTest.getSingleResult();
 
-		assertEquals(Long.valueOf(expected), actual);
-	}
+        assertEquals(Long.valueOf(expected), actual);
+    }
 }
