@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright © 2018 spring-data-dynamodb (https://github.com/boostchicken/spring-data-dynamodb)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,18 +31,18 @@ import org.springframework.util.Assert;
  */
 @Configuration
 public class DynamoDBResource {
-	private static final String DYNAMODB_PORT_PROPERTY = "dynamodb.port";
-	private static final String PORT = System.getProperty(DYNAMODB_PORT_PROPERTY);
+    private static final String DYNAMODB_PORT_PROPERTY = "dynamodb.port";
+    private static final String PORT = System.getProperty(DYNAMODB_PORT_PROPERTY);
 
-	@Bean
-	public AmazonDynamoDB amazonDynamoDB() {
-		Assert.notNull(PORT, "System property '" + DYNAMODB_PORT_PROPERTY + " not set!");
+    @Bean
+    public AmazonDynamoDB amazonDynamoDB() {
+        Assert.notNull(PORT, "System property '" + DYNAMODB_PORT_PROPERTY + " not set!");
 
-		AmazonDynamoDBClientBuilder builder = AmazonDynamoDBClientBuilder.standard();
-		builder.withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials("AWS-Key", "")));
-		builder.withEndpointConfiguration(
-				new AwsClientBuilder.EndpointConfiguration(String.format("http://localhost:%s", PORT), "us-east-1"));
+        AmazonDynamoDBClientBuilder builder = AmazonDynamoDBClientBuilder.standard();
+        builder.withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials("AWS-Key", "")));
+        builder.withEndpointConfiguration(
+                new AwsClientBuilder.EndpointConfiguration(String.format("http://localhost:%s", PORT), "us-east-1"));
 
-		return builder.build();
-	}
+        return builder.build();
+    }
 }

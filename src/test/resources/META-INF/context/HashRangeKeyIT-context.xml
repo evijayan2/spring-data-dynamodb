@@ -10,14 +10,15 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 http://docs.socialsignin.org/schema/data/dynamodb http://docs.socialsignin.org/schema/data/dynamodb/spring-dynamodb-1.0.xsd">
 
 
-
-
     <context:component-scan base-package="org.socialsignin.spring.data.dynamodb.core">
-        <context:include-filter type="regex" expression="org\.socialsignin\.spring\.data\.dynamodb\.core\.ConfigurationTI"/>
+        <context:include-filter type="regex"
+                                expression="org\.socialsignin\.spring\.data\.dynamodb\.core\.ConfigurationTI"/>
     </context:component-scan>
 
-    <dynamodb:repositories base-package="org.socialsignin.spring.data.dynamodb.domain.sample" amazon-dynamodb-ref="amazonDynamoDB">
-        <repository:include-filter type="regex" expression="org\.socialsignin\.spring\.data\.dynamodb\.domain\.sample\.PlaylistRepository" />
+    <dynamodb:repositories base-package="org.socialsignin.spring.data.dynamodb.domain.sample"
+                           amazon-dynamodb-ref="amazonDynamoDB">
+        <repository:include-filter type="regex"
+                                   expression="org\.socialsignin\.spring\.data\.dynamodb\.domain\.sample\.PlaylistRepository"/>
     </dynamodb:repositories>
 
 </beans>

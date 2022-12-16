@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright © 2018 spring-data-dynamodb (https://github.com/boostchicken/spring-data-dynamodb)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -187,6 +187,11 @@ public class SimpleDynamoDBCrudRepository<T, ID>
 	public void delete(T entity) {
 		Assert.notNull(entity, "The entity must not be null!");
 		dynamoDBOperations.delete(entity);
+	}
+
+	@Override
+	public void deleteAllById(Iterable<? extends ID> ids) {
+
 	}
 
 	@Override

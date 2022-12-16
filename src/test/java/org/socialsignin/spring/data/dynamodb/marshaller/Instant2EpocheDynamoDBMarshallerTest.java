@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright © 2018 spring-data-dynamodb (https://github.com/boostchicken/spring-data-dynamodb)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,51 +15,54 @@
  */
 package org.socialsignin.spring.data.dynamodb.marshaller;
 
-import org.junit.Before;
-import org.junit.Test;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class Instant2EpocheDynamoDBMarshallerTest {
 
-	private Instant2EpocheDynamoDBMarshaller underTest;
+    private Instant2EpocheDynamoDBMarshaller underTest;
 
-	@Before
-	public void setUp() {
-		underTest = new Instant2EpocheDynamoDBMarshaller();
-	}
+    @BeforeEach
+    public void setUp() {
+        underTest = new Instant2EpocheDynamoDBMarshaller();
+    }
 
-	@Test
-	public void testNullMarshall() {
-		String actual = underTest.marshall(null);
+    @Test
+    public void testNullMarshall() {
+        String actual = underTest.marshall(null);
 
-		assertNull(actual);
-	}
+        assertNull(actual);
+    }
 
-	@Test
-	public void testMarshall() {
-		assertEquals("0", underTest.marshall(Instant.ofEpochMilli(0)));
-		assertEquals("0", underTest.convert(Instant.ofEpochMilli(0)));
-	}
+    @Test
+    public void testMarshall() {
+        assertEquals("0", underTest.marshall(Instant.ofEpochMilli(0)));
+        assertEquals("0", underTest.convert(Instant.ofEpochMilli(0)));
+    }
 
-	@Test
-	public void testUnmarshallNull() {
-		Instant actual = underTest.unmarshall(Instant.class, null);
+    @Test
+    public void testUnmarshallNull() {
+        Instant actual = underTest.unmarshall(Instant.class, null);
 
-		assertNull(actual);
-	}
+        assertNull(actual);
+    }
 
-	@Test
-	public void testUnmarshall() {
-		assertEquals(Instant.ofEpochMilli(0), underTest.unmarshall(Instant.class, "0"));
-		assertEquals(Instant.ofEpochMilli(0), underTest.unconvert("0"));
-	}
+    @Test
+    public void testUnmarshall() {
+        assertEquals(Instant.ofEpochMilli(0), underTest.unmarshall(Instant.class, "0"));
+        assertEquals(Instant.ofEpochMilli(0), underTest.unconvert("0"));
+    }
 
-	@Test(expected = NumberFormatException.class)
-	public void testUnmarshallGarbage() {
-		underTest.unmarshall(Instant.class, "something");
-	}
+    @Test//(expected = NumberFormatException.class)
+    public void testUnmarshallGarbage() {
+        assertThrows(NumberFormatException.class, () ->
+        {
+            underTest.unmarshall(Instant.class, "something");
+        });
+    }
 }
